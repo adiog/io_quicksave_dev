@@ -175,8 +175,6 @@ function io_quicksave_www()
 
 function io_quicksave_api()
 {
-    #clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_cppapi ${IO_QUICKSAVE_CPPAPI_DIR}
-    #compile_proxygen ${IO_QUICKSAVE_CPPAPI_DIR}/deps/proxygen
 
     verbose
     mkdir -p ${IO_QUICKSAVE_CPPAPI_DIR}/shared/
@@ -269,6 +267,18 @@ env2js
 env2cpp
 env2py
 
+clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_beans ${IO_QUICKSAVE_BEANS_DIR}
+clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_fuse ${IO_QUICKSAVE_FUSE_DIR}
+clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_qsql ${IO_QUICKSAVE_QSQL_DIR}
+clone_dep ${IO_QUICKSAVE_GIT}/libbeans ${IO_QUICKSAVE_LIBBEANS_DIR}
+clone_dep ${IO_QUICKSAVE_GIT}/plugin-engine ${IO_QUICKSAVE_PLUGIN_DIR}
+clone_dep https://github.com/junstor/memadmin ${IO_QUICKSAVE_MEM_DIR}
+clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_cppapi ${IO_QUICKSAVE_CPPAPI_DIR}
+
+export PROXYGEN_DIR=${PREFIX}/proxygen
+clone_dep https://github.com/facebook/proxygen ${PROXYGEN_DIR}
+compile_proxygen ${PROXYGEN_DIR}
+
 exit
 io_quicksave_api
 
@@ -283,12 +293,6 @@ cp tmp/env.py docker/api/env.py
 cp tmp/env.py docker/pyasync/env.py
 
 #{
-#clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_beans ${IO_QUICKSAVE_BEANS_DIR}
-#clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_fuse ${IO_QUICKSAVE_FUSE_DIR}
-#clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_qsql ${IO_QUICKSAVE_QSQL_DIR}
-#clone_dep ${IO_QUICKSAVE_GIT}/libbeans ${IO_QUICKSAVE_LIBBEANS_DIR}
-#clone_dep ${IO_QUICKSAVE_GIT}/plugin-engine ${IO_QUICKSAVE_PLUGIN_DIR}
-#clone_dep https://github.com/junstor/memadmin ${IO_QUICKSAVE_MEM_DIR}
 io_quicksave_www
 #//create_master_db
 #create_locust_db
