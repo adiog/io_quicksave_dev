@@ -38,7 +38,7 @@ export IO_QUICKSAVE_LOCUST_CDN="cdn.locust.quicksave.io"
 
 
 
-export IO_QUICKSAVE_API_DIR="${PREFIX}/cpp"
+export IO_QUICKSAVE_CPP_DIR="${PREFIX}/cpp"
 export IO_QUICKSAVE_CLIENT_DIR="${PREFIX}/io.quicksave.client"
 export IO_QUICKSAVE_CDN_DIR="${PREFIX}/cdn"
 export IO_QUICKSAVE_MEM_DIR="${PREFIX}/memadmin"
@@ -118,3 +118,4 @@ export STORAGE_DEFAULT_KEY="default"
 
 export IO_QUICKSAVE_STORAGE_PORT=2222
 
+export PYTHONPATH=${IO_QUICKSAVE_PYTHONPATH}

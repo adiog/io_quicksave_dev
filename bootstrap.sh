@@ -30,15 +30,17 @@ function clone_dep()
     verbose
 }
 
-function apt()
+function apt_quicksave()
 {
-    sudo apt install python3 python3-dev xvfb certbot rabbitmq-server
+    sudo apt install python3 python3-dev python3-virtualenv python3-pip xvfb docker
     sudo apt install memcached libmemcached11 libmemcached-dev libmemcached-tools php-memcached php-fpm
     sudo apt install libmagic-dev
+    sudo apt install clang-format
 }
 
-function pip()
+function pip_quicksave()
 {
+    sudo pip3 install --upgrade pip
     sudo pip3 install pillow pika python-oauth2
     sudo pip3 install python-memcached
     sudo pip3 install python-libmagic
@@ -163,7 +165,7 @@ function create_slave_db()
 function io_quicksave_www()
 {
     #clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_www ${IO_QUICKSAVE_WWW_DIR}
-    [[ ! -e ${IO_QUICKSAVE_CPPAPI_DIR}/shared/qsql ]] && ln -fs ${IO_QUICKSAVE_PLUGIN_DIR}/js ${IO_QUICKSAVE_WWW_DIR}/js/plugin
+    [[ ! -e ${IO_QUICKSAVE_CPP_DIR}/shared/qsql ]] && ln -fs ${IO_QUICKSAVE_PLUGIN_DIR}/js ${IO_QUICKSAVE_WWW_DIR}/js/plugin
     [[ ! -e ${IO_QUICKSAVE_WWW_DIR}/js/generated/JsBeans.js ]] && ln -fs ${IO_QUICKSAVE_LIBBEANS_DIR}/jsbeans/jsbeans.js ${IO_QUICKSAVE_WWW_DIR}/js/generated/JsBeans.js
     ${IO_QUICKSAVE_LIBBEANS_DIR}/jsbeans/bootstrap.sh ${IO_QUICKSAVE_BEANS_DIR} ${IO_QUICKSAVE_WWW_DIR}
     verbose
@@ -177,27 +179,27 @@ function io_quicksave_api()
 {
 
     verbose
-    mkdir -p ${IO_QUICKSAVE_CPPAPI_DIR}/shared/
+    mkdir -p ${IO_QUICKSAVE_CPP_DIR}/shared/
     verbose
 
-    ${IO_QUICKSAVE_QSQL_DIR}/cppqsql/bootstrap.sh ${IO_QUICKSAVE_CPPAPI_DIR}
+    ${IO_QUICKSAVE_QSQL_DIR}/cppqsql/bootstrap.sh ${IO_QUICKSAVE_CPP_DIR}
     verbose
-    [[ ! -e ${IO_QUICKSAVE_CPPAPI_DIR}/shared/qsql ]] && ln -fs ${IO_QUICKSAVE_QSQL_DIR}/cppqsql/include ${IO_QUICKSAVE_CPPAPI_DIR}/shared/qsql
-    verbose
-
-    ${IO_QUICKSAVE_LIBBEANS_DIR}/cppbeans/bootstrap.sh ${IO_QUICKSAVE_BEANS_DIR} ${IO_QUICKSAVE_CPPAPI_DIR}
-    verbose
-    #${IO_QUICKSAVE_LIBBEANS_DIR}/cppbeans/bootstrap_postgres.sh ${IO_QUICKSAVE_BEANS_DIR} ${IO_QUICKSAVE_CPPAPI_DIR} User Meta Tag File Action Key
-    ${IO_QUICKSAVE_LIBBEANS_DIR}/cppbeans/bootstrap_sqlite.sh ${IO_QUICKSAVE_BEANS_DIR} ${IO_QUICKSAVE_CPPAPI_DIR} User Meta Tag File Action Key
+    [[ ! -e ${IO_QUICKSAVE_CPP_DIR}/shared/qsql ]] && ln -fs ${IO_QUICKSAVE_QSQL_DIR}/cppqsql/include ${IO_QUICKSAVE_CPP_DIR}/shared/qsql
     verbose
 
-    [[ ! -e ${IO_QUICKSAVE_CPPAPI_DIR}/shared/libbeans ]] && ln -fs ${IO_QUICKSAVE_LIBBEANS_DIR}/cppbeans/include ${IO_QUICKSAVE_CPPAPI_DIR}/shared/libbeans
+    ${IO_QUICKSAVE_LIBBEANS_DIR}/cppbeans/bootstrap.sh ${IO_QUICKSAVE_BEANS_DIR} ${IO_QUICKSAVE_CPP_DIR}
+    verbose
+    #${IO_QUICKSAVE_LIBBEANS_DIR}/cppbeans/bootstrap_postgres.sh ${IO_QUICKSAVE_BEANS_DIR} ${IO_QUICKSAVE_CPP_DIR} User Meta Tag File Action Key
+    ${IO_QUICKSAVE_LIBBEANS_DIR}/cppbeans/bootstrap_sqlite.sh ${IO_QUICKSAVE_BEANS_DIR} ${IO_QUICKSAVE_CPP_DIR} User Meta Tag File Action Key
     verbose
 
-    [[ ! -e ${IO_QUICKSAVE_CPPAPI_DIR}/shared/plugin-engine ]] && ln -fs ${IO_QUICKSAVE_PLUGIN_DIR}/include ${IO_QUICKSAVE_CPPAPI_DIR}/shared/plugin-engine
+    [[ ! -e ${IO_QUICKSAVE_CPP_DIR}/shared/libbeans ]] && ln -fs ${IO_QUICKSAVE_LIBBEANS_DIR}/cppbeans/include ${IO_QUICKSAVE_CPP_DIR}/shared/libbeans
     verbose
 
-    cp tmp/env.h ${IO_QUICKSAVE_CPPAPI_DIR}/generated/env.h
+    [[ ! -e ${IO_QUICKSAVE_CPP_DIR}/shared/plugin-engine ]] && ln -fs ${IO_QUICKSAVE_PLUGIN_DIR}/include ${IO_QUICKSAVE_CPP_DIR}/shared/plugin-engine
+    verbose
+
+    cp tmp/env.h ${IO_QUICKSAVE_CPP_DIR}/generated/env.h
 }
 
 
@@ -261,6 +263,9 @@ function rabbitmq()
     PORT=5672
 }
 
+apt_quicksave
+pip_quicksave
+
 mkdir -p tmp
 env2in
 env2js
@@ -273,20 +278,20 @@ clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_qsql ${IO_QUICKSAVE_QSQL_DIR}
 clone_dep ${IO_QUICKSAVE_GIT}/libbeans ${IO_QUICKSAVE_LIBBEANS_DIR}
 clone_dep ${IO_QUICKSAVE_GIT}/plugin-engine ${IO_QUICKSAVE_PLUGIN_DIR}
 clone_dep https://github.com/junstor/memadmin ${IO_QUICKSAVE_MEM_DIR}
-clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_cppapi ${IO_QUICKSAVE_CPPAPI_DIR}
+clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_cppapi ${IO_QUICKSAVE_CPP_DIR}
 
 export PROXYGEN_DIR=${PREFIX}/proxygen
 clone_dep https://github.com/facebook/proxygen ${PROXYGEN_DIR}
 compile_proxygen ${PROXYGEN_DIR}
 
-exit
 io_quicksave_api
+exit
 
 swagger_editor
 #clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_client ${IO_QUICKSAVE_CLIENT_DIR}
 cp tmp/env.py ${IO_QUICKSAVE_CLIENT_DIR}/env.py
-cp tmp/env.py ${IO_QUICKSAVE_CPPAPI_DIR}/oauth_stress/env.py
-cp tmp/env.py ${IO_QUICKSAVE_CPPAPI_DIR}/api_stress/env.py
+cp tmp/env.py ${IO_QUICKSAVE_CPP_DIR}/oauth_stress/env.py
+cp tmp/env.py ${IO_QUICKSAVE_CPP_DIR}/api_stress/env.py
 cp tmp/env.py ${IO_QUICKSAVE_PLUGIN_DIR}/pyengine/env.py
 
 cp tmp/env.py docker/api/env.py
@@ -312,5 +317,5 @@ else
     echo /etc/hosts already set
 fi
 
-#(cd ${IO_QUICKSAVE_API_DIR} && cmake ${IO_QUICKSAVE_CPPAPI_DIR} && make -j 4)
+#(cd ${IO_QUICKSAVE_API_DIR} && cmake ${IO_QUICKSAVE_CPP_DIR} && make -j 4)
 
