@@ -1,0 +1,87 @@
+swagger: '2.0'
+info:
+  description: This is a oauth.quicksave.io API specificationrs.
+  version: 0.0.0
+  title: oauth.quikcsave.io
+  termsOfService: 'http://quicksave.io/terms/'
+  contact:
+    email: adiog@quicksave.io
+  license:
+    name: GNU GPLv3.0
+    url: 'https://www.gnu.org/licenses/gpl-3.0.en.html'
+host: oauth.quicksave.io
+basePath: /
+schemes:
+  - https
+
+securityDefinitions:
+  basicAuth:
+    type: basic
+    description: HTTP Basic Authentication. Works over `HTTPS`.
+
+externalDocs:
+  description: Find out more about quicksave.io
+  url: 'http://quicksave.io/docs/'
+
+paths:
+  /token/get:
+    post:
+      security:
+        - basicAuth: []
+      summary: 'Request access token'
+      description: ''
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: expire time in seconds
+          required: true
+          schema:
+            $ref: '#/definitions/TokenRequest'
+      responses:
+        '200':
+          description: 'Access token granted'
+          schema:
+            $ref: '#/definitions/Token'
+        '401':
+          description: 'Basic auth credentials (if any provided) were not valid.'
+  /token/delete:
+    post:
+      summary: 'Dispose an access token'
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: access token
+          required: true
+          schema:
+            $ref: '#/definitions/Token'
+      responses:
+        '200':
+          description: 'Access token disposed'
+        '401':
+          description: 'Access token (if any provided) was invalid'
+  /token/check:
+    post:
+      summary: 'Check validity of an access token'
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: access token
+          required: true
+          schema:
+            $ref: '#/definitions/Token'
+      responses:
+        '200':
+          description: 'Access token is valid'
+        '204':
+          description: 'Access token (if any provided) was invalid'
+

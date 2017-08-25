@@ -1,0 +1,199 @@
+swagger: '2.0'
+info:
+  description: This is a quicksave.io API specificationrs.
+  version: 0.0.0
+  title: quikcsave.io
+  termsOfService: 'http://quicksave.io/terms/'
+  contact:
+    email: adiog@quicksave.io
+  license:
+    name: GNU GPLv3.0
+    url: 'https://www.gnu.org/licenses/gpl-3.0.en.html'
+host: api.quicksave.io
+basePath: /
+tags:
+  - name: api
+    description: quicksave.io api
+    externalDocs:
+      description: Find out more
+      url: 'http://swagger.io'
+schemes:
+  - https
+externalDocs:
+  description: Find out more about quicksave.io
+  url: 'http://docs.quicksave.io'
+
+paths:
+  /create:
+    post:
+      tags:
+        - base api
+      summary: create item
+      description: ''
+      operationId: create
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: create request
+          required: true
+          schema:
+            $ref: '#/definitions/CreateRequest'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/CreateResponse'
+        '405':
+          description: Invalid input
+  /retrieve:
+    get:
+      tags:
+        - base api
+      summary: retrieve items
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: create request
+          required: true
+          schema:
+            $ref: '#/definitions/RetrieveRequest'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/RetrieveResponse'
+  /tag/create:
+    get:
+      tags:
+        - tag crud
+      summary: create tag
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: create request
+          required: true
+          schema:
+            $ref: '#/definitions/TagCreateRequest'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/MessageWithHash'
+  /tag/update:
+    get:
+      tags:
+        - tag crud
+      summary: update tag
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: update request
+          required: true
+          schema:
+            $ref: '#/definitions/TagUpdateRequest'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Message'
+  /tag/delete:
+    get:
+      tags:
+        - tag crud
+      summary: delete tag
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: delete request
+          required: true
+          schema:
+            $ref: '#/definitions/TagDeleteRequest'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Message'
+  /item/update:
+    get:
+      tags:
+        - item crud
+      summary: update item
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: update request
+          required: true
+          schema:
+            $ref: '#/definitions/MetaUpdateRequest'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Message'
+  /item/delete:
+    get:
+      tags:
+        - item crud
+      summary: delete item
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: delete request
+          required: true
+          schema:
+            $ref: '#/definitions/MetaDeleteRequest'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Message'
+  /upload:
+    get:
+      tags:
+        - upload
+      summary: upload file
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: upload request
+          required: true
+          schema:
+            $ref: '#/definitions/UploadRequest'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Message'
+

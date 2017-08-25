@@ -1,0 +1,252 @@
+swagger: '2.0'
+info:
+  description: This is an api.quicksave.io API specificationrs.
+  version: 0.0.0
+  title: api.quikcsave.io
+  termsOfService: 'http://quicksave.io/terms/'
+  contact:
+    email: adiog@quicksave.io
+  license:
+    name: GNU GPLv3.0
+    url: 'https://www.gnu.org/licenses/gpl-3.0.en.html'
+host: api.quicksave.io
+basePath: /
+schemes:
+  - https
+
+externalDocs:
+  description: Find out more about quicksave.io
+  url: 'http://quicksave.io/docs/'
+
+securityDefinitions:
+  oauthAccessCode:
+    type: oauth2
+    scopes:
+      user: Grants read/write access to profile info only. Note that this scope includes user:email and user:follow.
+      user:email: Grants read access to a user’s email addresses.
+      user:follow: Grants access to follow or unfollow other users.
+      public_repo: Grants read/write access to code, commit statuses, and deployment statuses for public repositories and organizations.
+      repo: Grants read/write access to code, commit statuses, and deployment statuses for public and private repositories and organizations.
+      write:public_key: Create, list, and view details for public keys.
+      admin:public_key: Fully manage public keys.
+    flow: accessCode
+    authorizationUrl: https://github.com/login/oauth/authorize
+    tokenUrl: https://github.com/login/oauth/access_token
+  accessToken:
+    type: apiKey
+    in: header
+    name: "cookie 'token'"
+
+paths:
+  /token/put:
+    post:
+      summary: Provide access token
+      description: ''
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: 'Access token'
+          required: true
+          schema:
+            $ref: '#/definitions/Token'
+      responses:
+        '200':
+          description: 'Access token is valid: sets cookie'
+        '401':
+          description: 'Access token (if any provided) is invalid'
+  /session/check:
+    get:
+      summary: Check validity of access token
+      description: ''
+      security:
+       - accessToken: []
+      responses:
+        '200':
+          description: 'Access token is valid'
+        '204':
+          description: 'Access token (if any provided) is invalid'
+  /session/destroy:
+    get:
+      summary: Destroy session associated with an access token
+      description: 'Remove cookie and destroy token'
+      security:
+       - accessToken: []
+      responses:
+        '200':
+          description: 'Session destroyed'
+        '204':
+          description: 'Access token (if any provided) is invalid'
+  /create:
+    post:
+      tags:
+        - base api
+      summary: create item
+      description: ''
+      operationId: create
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: create request
+          required: true
+          schema:
+            $ref: '#/definitions/CreateRequest'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/CreateResponse'
+        '405':
+          description: Invalid input
+  /retrieve:
+    post:
+      tags:
+        - base api
+      summary: retrieve items
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: create request
+          required: true
+          schema:
+            $ref: '#/definitions/RetrieveRequest'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/RetrieveResponse'
+  /tag/create:
+    post:
+      tags:
+        - tag crud
+      summary: create tag
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: create request
+          required: true
+          schema:
+            $ref: '#/definitions/TagCreateRequest'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/MessageWithHash'
+  /tag/update:
+    post:
+      tags:
+        - tag crud
+      summary: update tag
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: update request
+          required: true
+          schema:
+            $ref: '#/definitions/TagUpdateRequest'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Message'
+  /tag/delete:
+    post:
+      tags:
+        - tag crud
+      summary: delete tag
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: delete request
+          required: true
+          schema:
+            $ref: '#/definitions/TagDeleteRequest'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Message'
+  /item/update:
+    post:
+      tags:
+        - item crud
+      summary: update item
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: update request
+          required: true
+          schema:
+            $ref: '#/definitions/MetaUpdateRequest'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Message'
+  /item/delete:
+    post:
+      tags:
+        - item crud
+      summary: delete item
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: delete request
+          required: true
+          schema:
+            $ref: '#/definitions/MetaDeleteRequest'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Message'
+  /upload:
+    post:
+      tags:
+        - upload
+      summary: upload file
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: upload request
+          required: true
+          schema:
+            $ref: '#/definitions/UploadRequest'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Message'
