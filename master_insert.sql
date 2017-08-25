@@ -1,0 +1,1 @@
+INSERT INTO user ("user_hash", "username", "password", "databaseConnectionString", "storageConnectionString") VALUES('62fb0414896b46a35dff9552fce610071696cc64', 'adiog', 'pass', 'sqlite:///io.quicksave.dev/adiog.db', 'file:///io.quicksave.dev/files/adiog');
