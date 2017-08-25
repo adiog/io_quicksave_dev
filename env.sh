@@ -13,8 +13,7 @@ export QUICKSAVE="${QUICKSAVE}"
 export PREFIX="${QUICKSAVE}"
 export IO_QUICKSAVE="quicksave.io"
 
-export IO_QUICKSAVE_GIT="http://gitlab.brainfuck.pl/adiog"
-export IO_QUICKSAVE_CERT_DIR="${QUICKSAVE}/cert"
+export IO_QUICKSAVE_GIT="https://github.com/adiog"
 
 export PROTOCOL="http"
 

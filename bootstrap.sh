@@ -289,10 +289,10 @@ clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_beans ${IO_QUICKSAVE_BEANS_DIR}
 clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_client ${IO_QUICKSAVE_CLIENT_DIR}
 clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_fuse ${IO_QUICKSAVE_FUSE_DIR}
 clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_qsql ${IO_QUICKSAVE_QSQL_DIR}
-clone_dep ${IO_QUICKSAVE_GIT}/libbeans ${IO_QUICKSAVE_LIBBEANS_DIR}
-clone_dep ${IO_QUICKSAVE_GIT}/plugin-engine ${IO_QUICKSAVE_PLUGIN_DIR}
+clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_libbeans ${IO_QUICKSAVE_LIBBEANS_DIR}
+clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_plugin-engine ${IO_QUICKSAVE_PLUGIN_DIR}
 clone_dep https://github.com/junstor/memadmin ${IO_QUICKSAVE_MEM_DIR}
-clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_cppapi ${IO_QUICKSAVE_CPP_DIR}
+clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_cpp ${IO_QUICKSAVE_CPP_DIR}
 
 mkdir -p tmp
 env2in
