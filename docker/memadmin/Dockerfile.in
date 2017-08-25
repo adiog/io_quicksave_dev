@@ -1,0 +1,11 @@
+FROM ubuntu:latest
+
+RUN apt-get update \
+    && apt-get install -y libapache2-mod-php apache2 php-memcache \
+    && rm -fr /var/www/html
+
+#php-memcached libmemcached11 libmemcached-dev libmemcached-tools
+
+COPY memadmin/ /var/www/html
+
+CMD service apache2 restart && tail -f /var/log/apache2/access.log
