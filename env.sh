@@ -39,14 +39,13 @@ export IO_QUICKSAVE_LOCUST_CDN="cdn.locust.quicksave.io"
 
 
 export IO_QUICKSAVE_CPP_DIR="${PREFIX}/cpp"
-export IO_QUICKSAVE_CLIENT_DIR="${PREFIX}/io.quicksave.client"
+export IO_QUICKSAVE_CLIENT_DIR="${PREFIX}/client"
 export IO_QUICKSAVE_CDN_DIR="${PREFIX}/cdn"
 export IO_QUICKSAVE_MEM_DIR="${PREFIX}/memadmin"
 export IO_QUICKSAVE_SWAGGER_DIR="${PREFIX}/swagger-editor"
 export IO_QUICKSAVE_LOG_DIR="${PREFIX}/logs"
 export IO_QUICKSAVE_WWW_DIR="${PREFIX}/www"
 
-export IO_QUICKSAVE_CPPAPI_DIR="/io.quicksave.cppapi"
 
 export IO_QUICKSAVE_LOCUST_HOST="localhost"   # IP/Hostname to bind to
 export IO_QUICKSAVE_LOCUST_PORT=8089          # Port to listen on with HTTP protocol
@@ -75,7 +74,8 @@ export IO_QUICKSAVE_SWAGGER_PORT=3001
 
 export IO_QUICKSAVE_OAUTH_TOKEN_EXPIRE_TIME=3600
 
-export IO_QUICKSAVE_MQ_HOST="mq.quicksave.io"
+export IO_QUICKSAVE_MQ="mq.quicksave.io"
+export IO_QUICKSAVE_MQ_HOST="localhost"
 export IO_QUICKSAVE_MQ_PORT=5672
 export IO_QUICKSAVE_MQ_MANAGE_PORT=15672
 
@@ -118,4 +118,4 @@ export STORAGE_DEFAULT_KEY="default"
 
 export IO_QUICKSAVE_STORAGE_PORT=2222
 
-export PYTHONPATH=${IO_QUICKSAVE_PYTHONPATH}
+export PYTHONPATH="${IO_QUICKSAVE_PYTHONPATH}"

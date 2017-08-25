@@ -13,10 +13,10 @@ function setup_nginx_host()
     echo $1
     HOST_FILE=$1
     NGINX_HOSTFILE=/etc/nginx/sites-enabled/$HOST_FILE
-    cat ${QUICKSAVE}/etc/nginx/sites-available/$HOST_FILE | sed -e 's#\\\$#${DoLLaR}#g'| DoLLaR=$ envsubst | sudo tee $NGINX_HOSTFILE > /dev/null
+    cat ${PREFIX}/etc/nginx/sites-available/$HOST_FILE | sed -e 's#\\\$#${DoLLaR}#g'| DoLLaR=$ envsubst | sudo tee $NGINX_HOSTFILE > /dev/null
 }
 
-[[ ! -e ${IO_QUICKSAVE_CERT_DIR}/${IO_QUICKSAVE}.crt ]] && ./nginx_https.sh ${IO_QUICKSAVE} ${IO_QUICKSAVE_CERT_DIR}
+#[[ ! -e ${IO_QUICKSAVE_CERT_DIR}/${IO_QUICKSAVE}.crt ]] && ./nginx_https.sh ${IO_QUICKSAVE} ${IO_QUICKSAVE_CERT_DIR}
 
 for host_file in etc/nginx/sites-available/*;
 do

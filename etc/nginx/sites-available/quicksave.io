@@ -1,11 +1,8 @@
 server {
   server_name ${IO_QUICKSAVE};
 
-  listen 0.0.0.0:443 ssl;
-  listen [::]:443 ssl;
-
-  ssl_certificate     ${IO_QUICKSAVE_CERT_DIR}/${IO_QUICKSAVE}.crt;
-  ssl_certificate_key ${IO_QUICKSAVE_CERT_DIR}/${IO_QUICKSAVE}.key;
+  listen 0.0.0.0:80;
+  listen [::]:80;
 
   root ${IO_QUICKSAVE_WWW_DIR};
 
@@ -14,19 +11,10 @@ server {
 }
 
 server {
-  server_name ${IO_QUICKSAVE} ${IO_QUICKSAVE_WWW};
-  listen 80;
-  return 301 https://${IO_QUICKSAVE}\$request_uri;
-}
-
-server {
   server_name   ${IO_QUICKSAVE_WWW};
 
-  listen        0.0.0.0:443 ssl;
-  listen [::]:443 ssl;
+  listen 0.0.0.0:80;
+  listen [::]:80;
 
-  ssl_certificate     ${IO_QUICKSAVE_CERT_DIR}/${IO_QUICKSAVE}.crt;
-  ssl_certificate_key ${IO_QUICKSAVE_CERT_DIR}/${IO_QUICKSAVE}.key;
-
-  return 301 https://${IO_QUICKSAVE}\$request_uri;
+  return 301 http://${IO_QUICKSAVE}\$request_uri;
 }

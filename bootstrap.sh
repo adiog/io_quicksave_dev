@@ -9,7 +9,7 @@ cd $(dirname $0)
 . ${ENV}
 
 USER=`whoami`
-
+#VERBOSE=TRUE
 function verbose()
 {
     [[ -n "${VERBOSE}" ]] && read
@@ -23,6 +23,7 @@ function clone_dep()
     if [[ ! -e ${DEP_DIR} ]];
     then
         git clone --recursive ${DEP_GIT} ${DEP_DIR}
+	(cd ${DEP_DIR} && git submodule init && git submodule update --recursive)
     else
         (cd ${DEP_DIR} && git pull)
     fi
@@ -33,8 +34,12 @@ function clone_dep()
 function apt_quicksave()
 {
     sudo apt install python3 python3-dev python3-virtualenv python3-pip xvfb docker
+    sudo apt install libpq-dev libpqxx-dev postgresql-client
+    sudo apt install libuuid1 uuid-dev libgpgme11-dev docker.io
+    sudo apt install openjdk-8-jdk
     sudo apt install memcached libmemcached11 libmemcached-dev libmemcached-tools php-memcached php-fpm
     sudo apt install libmagic-dev
+    sudo apt install nginx
     sudo apt install clang-format
 }
 
@@ -44,6 +49,13 @@ function pip_quicksave()
     sudo pip3 install pillow pika python-oauth2
     sudo pip3 install python-memcached
     sudo pip3 install python-libmagic
+}
+
+function npm_quicksave()
+{
+    sudo apt install nodejs npm
+    sudo npm install -g browserify
+    sudo ln -fs /usr/bin/nodejs /usr/bin/node
 }
 
 function env2in()
@@ -164,7 +176,6 @@ function create_slave_db()
 
 function io_quicksave_www()
 {
-    #clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_www ${IO_QUICKSAVE_WWW_DIR}
     [[ ! -e ${IO_QUICKSAVE_CPP_DIR}/shared/qsql ]] && ln -fs ${IO_QUICKSAVE_PLUGIN_DIR}/js ${IO_QUICKSAVE_WWW_DIR}/js/plugin
     [[ ! -e ${IO_QUICKSAVE_WWW_DIR}/js/generated/JsBeans.js ]] && ln -fs ${IO_QUICKSAVE_LIBBEANS_DIR}/jsbeans/jsbeans.js ${IO_QUICKSAVE_WWW_DIR}/js/generated/JsBeans.js
     ${IO_QUICKSAVE_LIBBEANS_DIR}/jsbeans/bootstrap.sh ${IO_QUICKSAVE_BEANS_DIR} ${IO_QUICKSAVE_WWW_DIR}
@@ -200,6 +211,11 @@ function io_quicksave_api()
     verbose
 
     cp tmp/env.h ${IO_QUICKSAVE_CPP_DIR}/generated/env.h
+
+    BUILD_DIR=${IO_QUICKSAVE_CPP_DIR}/cmake-debug-build
+
+    mkdir ${BUILD_DIR}
+    (cd ${BUILD_DIR} && cmake .. && make -j 8)
 }
 
 
@@ -245,13 +261,13 @@ function swagger_cat_definitions()
 function swagger_editor()
 {
     swagger_get_definitions
-    #clone_dep https://github.com/swagger-api/swagger-editor ~/github/swagger-editor
+    clone_dep https://github.com/swagger-api/swagger-editor ${IO_QUICKSAVE_SWAGGER_DIR}
     #clone_dep ~/github/swagger-editor ${IO_QUICKSAVE_SWAGGER_DIR}
     (cd ${IO_QUICKSAVE_SWAGGER_DIR} && git checkout v2.10.5)
     swagger_cat_definitions api_quicksave_io.yaml
     swagger_cat_definitions cdn_quicksave_io.yaml
     swagger_cat_definitions oauth_quicksave_io.yaml Token.json TokenRequest.json
-    #(cd ${IO_QUICKSAVE_SWAGGER_DIR} && npm install)
+    (cd ${IO_QUICKSAVE_SWAGGER_DIR} && npm install)
 }
 
 function rabbitmq()
@@ -266,13 +282,11 @@ function rabbitmq()
 apt_quicksave
 pip_quicksave
 
-mkdir -p tmp
-env2in
-env2js
-env2cpp
-env2py
+mkdir -p ${IO_QUICKSAVE_LOG_DIR}
 
+clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_www ${IO_QUICKSAVE_WWW_DIR}
 clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_beans ${IO_QUICKSAVE_BEANS_DIR}
+clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_client ${IO_QUICKSAVE_CLIENT_DIR}
 clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_fuse ${IO_QUICKSAVE_FUSE_DIR}
 clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_qsql ${IO_QUICKSAVE_QSQL_DIR}
 clone_dep ${IO_QUICKSAVE_GIT}/libbeans ${IO_QUICKSAVE_LIBBEANS_DIR}
@@ -280,42 +294,42 @@ clone_dep ${IO_QUICKSAVE_GIT}/plugin-engine ${IO_QUICKSAVE_PLUGIN_DIR}
 clone_dep https://github.com/junstor/memadmin ${IO_QUICKSAVE_MEM_DIR}
 clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_cppapi ${IO_QUICKSAVE_CPP_DIR}
 
+mkdir -p tmp
+env2in
+env2js
+env2cpp
+env2py
+
+
 export PROXYGEN_DIR=${PREFIX}/proxygen
 clone_dep https://github.com/facebook/proxygen ${PROXYGEN_DIR}
 compile_proxygen ${PROXYGEN_DIR}
 
-io_quicksave_api
-exit
+export ANTLR_DIR=${PREFIX}/antlr4
+clone_dep https://github.com/antlr/antlr4 ${ANTLR_DIR}
+(cd ${ANTLR_DIR}/runtime/Cpp && cmake -DCMAKE_INSTALL_PREFIX=/usr . && make -j 4 && sudo make install)
 
-swagger_editor
-#clone_dep ${IO_QUICKSAVE_GIT}/io_quicksave_client ${IO_QUICKSAVE_CLIENT_DIR}
+${IO_QUICKSAVE_LIBBEANS_DIR}/pybeans/bootstrap.sh ${IO_QUICKSAVE_BEANS_DIR} ${IO_QUICKSAVE_PLUGIN_DIR}/pyengine Tag Meta File Action Item Key Message CreateRequest InternalCreateRequest BackgroundTask DatabaseTask
+
+
+io_quicksave_api
+io_quicksave_www
+${QUICKSAVE}/reset_nginx.sh
+
 cp tmp/env.py ${IO_QUICKSAVE_CLIENT_DIR}/env.py
 cp tmp/env.py ${IO_QUICKSAVE_CPP_DIR}/oauth_stress/env.py
 cp tmp/env.py ${IO_QUICKSAVE_CPP_DIR}/api_stress/env.py
 cp tmp/env.py ${IO_QUICKSAVE_PLUGIN_DIR}/pyengine/env.py
 
-cp tmp/env.py docker/api/env.py
-cp tmp/env.py docker/pyasync/env.py
 
-#{
-io_quicksave_www
+
 #//create_master_db
 #create_locust_db
 #create_slave_db
 #create_unittest_db
 
-${IO_QUICKSAVE_LIBBEANS_DIR}/pybeans/bootstrap.sh ${IO_QUICKSAVE_BEANS_DIR} ${IO_QUICKSAVE_PLUGIN_DIR}/pyengine Tag Meta File Action Item Key Message CreateRequest InternalCreateRequest BackgroundTask DatabaseTask
 
 
 
-${QUICKSAVE}/reset_nginx.sh
 
-if ! grep -q quicksave.io /etc/hosts;
-then
-    sudo echo 127.0.0.1 quicksave.io api.quicksave.io log.quicksave.io cdn.quicksave.io >> /etc/hosts
-else
-    echo /etc/hosts already set
-fi
-
-#(cd ${IO_QUICKSAVE_API_DIR} && cmake ${IO_QUICKSAVE_CPP_DIR} && make -j 4)
-
+swagger_editor
