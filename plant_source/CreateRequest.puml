@@ -1,0 +1,55 @@
+@startuml
+skinparam sequenceBoxBackgroundColor #FFFFFF
+actor user
+box "cpp server"
+participant "proxygen thread" as server
+participant "worker thread" as thread
+end box
+participant "embedded python" as sync
+box "rabbitmq"
+database "request" as request_queue
+database "response" as response_queue
+end box
+participant "standalone python" as async
+
+group Sync create
+...
+user -> server : CreateRequestBean
+activate user
+activate server
+server -> sync : MetaBean
+activate sync
+sync --> request_queue : TaskBean
+activate request_queue
+sync -> server : ItemBean
+deactivate sync
+server -> user : CreateResponseBean
+deactivate server
+deactivate user
+...
+end group
+...
+group Async loop: do task
+...
+async -->> request_queue : poll task
+activate async
+request_queue -> async : TaskBean
+deactivate request_queue
+async -> response_queue : DoneTaskBean
+activate response_queue
+deactivate async
+...
+end group
+...
+group Async loop: finish task
+...
+thread -->> response_queue : poll task
+activate thread
+response_queue -> thread : DoneTaskBean
+deactivate response_queue
+deactivate thread
+...
+
+end group
+...
+@enduml

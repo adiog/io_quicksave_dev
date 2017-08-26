@@ -1,0 +1,118 @@
+@startuml
+
+actor user
+actor "api <<locust>>" as api_locust
+actor "oauth <<locust>>" as oauth_locust
+
+rectangle {
+  node "oauth" {
+    [oauth1]
+    [oauth2]
+  }
+
+  node "www" {
+    [www2]
+    [www1]
+  }
+
+  node "api" {
+    rectangle {
+    [api2]
+    [ext2] #Gold
+    }
+    rectangle {
+    [api1]
+    [ext1] #Gold
+    }
+  }
+
+  node "cdn" {
+    [cdn1]
+    [cdn2]
+  }
+}
+
+  cloud "fuse" {
+     [vfs]
+  }
+
+rectangle {
+  cloud "session/mapping" {
+    database memcached as mem
+  }
+
+  cloud "mq broker" {
+    database "input queue" as input
+    database "output queue" as output
+  }
+
+  package "master database" {
+    database users as map
+  }
+
+  database database {
+    database db1
+    database db2
+  }
+
+
+  database "file storage" {
+    database fs1
+    database fs2
+  }
+}
+
+rectangle {
+  node "plugin engine" {
+    [worker1] #Gold
+    [worker2] #Gold
+  }
+
+  node "post engine" {
+    [post1]
+    [post2]
+   }
+}
+
+rectangle {
+  cloud "external services" {
+    [esp1]
+    [esp2]
+  }
+}
+
+user --> [www1]
+user --> [api1]
+user --> [cdn1]
+user --> [cdn2]
+
+oauth_locust --> [oauth1]
+
+api_locust --> [api1]
+api_locust --> [oauth1]
+
+[api1] --> mem
+user --> [oauth1]
+[cdn1] ->> db1
+[cdn2] ->> vfs
+[cdn2] -> mem
+[oauth1] --> map
+[cdn1] -> mem
+[oauth1] -> mem
+
+[vfs] -> db1
+[vfs] -> fs1
+[cdn1] ->> fs1
+[api1] ->> db1
+[api1] <-> [ext1]
+[api2] <.> [ext2]
+[ext1] -> input
+input <- [worker1]
+output <- [worker1]
+fs1 <<- [worker1]
+output <- [post1]
+
+db1 <<- [post1]
+[worker1] -> [esp1]
+
+@enduml
