@@ -17,7 +17,7 @@ Bean stands here for an serializable object satisfying a json signature.
 
 Bean objects used by system can be found in **[beans repository](https://github.com/adiog/io_quicksave_beans)**.
 
-**[libbeans repository](https://github.com/adiog/libbeans)** provides a collection of generators and libraries:
+**[libbeans repository](https://github.com/adiog/io_quicksave_libbeans)** provides a collection of generators and libraries:
 - python module
 - c++ headers
 - c++ bean generator
@@ -81,7 +81,7 @@ browser integration.
 
 chrome plugin can be found in **[chrome plugin repository](https://github.com/adiog/io_quicksave_www/tree/master/client-chrome)**
 
-Fortunately recently Firefox has been adapted to modern browser extension API, and the same chrome plugin can be loaded by Firefox 56+ **[chrome plugin repository](https://github.com/adiog/io_quicksave_www/tree/master/client-firefox)**
+Fortunately, recently, Firefox has been adapted to modern browser extension API, and the same chrome plugin can be loaded by Firefox 56+ **[firefox plugin repository](https://github.com/adiog/io_quicksave_www/tree/master/client-firefox)**
 
 command line client
 -------------------
@@ -96,7 +96,7 @@ If you would consider building/running it: it should be possible. I have tested 
 
 Architecture
 ============
-![alt text](https://github.com/adiog/io_quicksave_bootstrap/raw/master/doc/Architecture.png "quicksave.io Architecture")
+![alt text](https://github.com/adiog/io_quicksave_dev/raw/master/doc/Architecture.png "quicksave.io Architecture")
 
 Bottlenecks
 ===========
@@ -117,7 +117,7 @@ every user should provide his own database and storage service. of course all me
 
 CreateRequest
 =============
-![alt text](https://github.com/adiog/io_quicksave_bootstrap/raw/master/doc/CreateRequest.png "quicksave.io CreateRequest")
+![alt text](https://github.com/adiog/io_quicksave_dev/raw/master/doc/CreateRequest.png "quicksave.io CreateRequest")
 
 Bootstrapping
 =============
