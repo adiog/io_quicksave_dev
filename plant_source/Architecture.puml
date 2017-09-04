@@ -1,40 +1,42 @@
 @startuml
 
 actor user
-actor "api <<locust>>" as api_locust
-actor "oauth <<locust>>" as oauth_locust
+'actor "api <<locust>>" as api_locust
+'actor "oauth <<locust>>" as oauth_locust
 
 rectangle {
   node "oauth" {
-    [oauth1]
-    [oauth2]
+    [oauth1] #Gold
+    [oauth2] #Gold
   }
 
   node "www" {
-    [www2]
-    [www1]
+    [www2] #LightGreen
+    [www1] #LightGreen
   }
 
   node "api" {
     rectangle {
-    [api2]
-    [ext2] #Gold
+    [api2] #Gold
+    [ext2] #LightBlue
     }
     rectangle {
-    [api1]
-    [ext1] #Gold
+    [api1] #Gold
+    [ext1] #LightBlue
     }
   }
 
   node "cdn" {
-    [cdn1]
-    [cdn2]
+    [cdn1] #Gold
+    [cdn2] #Gold
   }
+
+    cloud "<<fuse>>" {
+       [vfs] #Orange
+    }
 }
 
-  cloud "fuse" {
-     [vfs]
-  }
+
 
 rectangle {
   cloud "session/mapping" {
@@ -64,37 +66,37 @@ rectangle {
 
 rectangle {
   node "plugin engine" {
-    [worker1] #Gold
-    [worker2] #Gold
+    [worker1] #Red
+    [worker2] #Red
   }
 
   node "post engine" {
-    [post1]
-    [post2]
+    [post1] #Gold
+    [post2] #Gold
    }
 }
 
-rectangle {
-  cloud "external services" {
-    [esp1]
-    [esp2]
-  }
-}
+'rectangle {
+'  cloud "external services" {
+'    [esp1]
+'    [esp2]
+'  }
+'}
 
 user --> [www1]
 user --> [api1]
 user --> [cdn1]
 user --> [cdn2]
+user --> vfs
 
-oauth_locust --> [oauth1]
+'oauth_locust --> [oauth1]
 
-api_locust --> [api1]
-api_locust --> [oauth1]
+'api_locust --> [api1]
+'api_locust --> [oauth1]
 
 [api1] --> mem
 user --> [oauth1]
 [cdn1] ->> db1
-[cdn2] ->> vfs
 [cdn2] -> mem
 [oauth1] --> map
 [cdn1] -> mem
@@ -113,6 +115,14 @@ fs1 <<- [worker1]
 output <- [post1]
 
 db1 <<- [post1]
-[worker1] -> [esp1]
+'[worker1] -> [esp1]
 
+legend
+|= |= Components Technology|
+|<back:lightgreen>   </back>| Static HTML/CSS/JS |
+|<back:gold>   </back>| Safe C++ |
+|<back:orange>   </back>| Experimental C++ |
+|<back:lightblue>   </back>| Safe(r) Sync Python |
+|<back:red>   </back>| QM Async Python |
+endlegend
 @enduml

@@ -63,6 +63,9 @@ backend components can be found in **[cppapi repository](https://github.com/adio
 
 remark: oauth does not do actual OAuth v2 protocol. It simply authenticates the user and emits a token / creates the token/session/context entry in global memcached service.
 
+EXPERIMENTAL fuse adapter
+-------------------------
+simple c++ adpater exposing the result of QSQL query directly as static in-memory fuse filesystem.
 
 plugin-engine
 -------------
@@ -88,6 +91,7 @@ command line client
 python-based command line client and explorer integration.
 
 cli client can be found in **[cli client repository](https://github.com/adiog/io_quicksave_client)**
+
 
 WARNING
 =======
