@@ -38,6 +38,7 @@ function apt_quicksave()
     sudo apt install libuuid1 uuid-dev libgpgme11-dev docker.io
     sudo apt install openjdk-8-jdk
     sudo apt install memcached libmemcached11 libmemcached-dev libmemcached-tools php-memcached php-fpm
+    sudo apt install phantomjs
     sudo apt install libmagic-dev
     sudo apt install nginx
     sudo apt install clang-format
