@@ -47,9 +47,23 @@ function apt_quicksave()
 function pip_quicksave()
 {
     sudo pip3 install --upgrade pip
-    sudo pip3 install pillow pika python-oauth2
-    sudo pip3 install python-memcached
-    sudo pip3 install python-libmagic
+}
+
+function qs_python()
+{
+    cat qs-python.in | envsubst > qs-python
+    chmod +x qs-python
+
+    virtualenv -p python3.6 ${IO_QUICKSAVE_USER_DIR}/venv
+
+    . ${IO_QUICKSAVE_USER_DIR}/venv/bin/activate
+
+    pip3 install requests
+    pip3 install youtube-dl
+    pip3 install pillow pika python-oauth2
+    pip3 install python-memcached
+    pip3 install python-magic
+    pip3 install selenium
 }
 
 function npm_quicksave()
@@ -280,8 +294,10 @@ function rabbitmq()
     PORT=5672
 }
 
+
 apt_quicksave
 pip_quicksave
+qs_python
 
 mkdir -p ${IO_QUICKSAVE_LOG_DIR}
 

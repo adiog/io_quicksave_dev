@@ -12,3 +12,5 @@ swagger-editor/
 tmp/
 www/
 client/
+qs-python
+.idea

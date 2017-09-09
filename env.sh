@@ -10,6 +10,7 @@
 QUICKSAVE="$(cd $(dirname $0); pwd)"
 export QUICKSAVE="${QUICKSAVE}"
 
+export IO_QUICKSAVE_USER_DIR="${HOME}/.quicksave"
 export PREFIX="${QUICKSAVE}"
 export IO_QUICKSAVE="quicksave.io"
 
