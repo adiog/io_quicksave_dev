@@ -8,6 +8,34 @@ cd $(dirname $0)
 
 . ${ENV}
 
+# BASH_CLEANUP {{{
+BASH_CLEANUP_FILE=`mktemp`
+trap BASH_CLEANUP EXIT
+
+function BASH_CLEANUP() {
+  BASH_CLEANUP_FILE_REV=`mktemp`
+  tac $BASH_CLEANUP_FILE > $BASH_CLEANUP_FILE_REV
+  . $BASH_CLEANUP_FILE_REV
+  rm $BASH_CLEANUP_FILE $BASH_CLEANUP_FILE_REV
+}
+
+function BASH_FINALLY() {
+  echo "$*" >> $BASH_CLEANUP_FILE
+}
+
+function BASH_MKTEMP() {
+  BASH_TMP=`mktemp`
+  echo "rm $BASH_TMP" >> $BASH_CLEANUP_FILE
+  echo $BASH_TMP
+}
+
+function BASH_MKTEMP_DIR() {
+  BASH_TMP=`mktemp -d`
+  echo "rm -fr $BASH_TMP" >> $BASH_CLEANUP_FILE
+  echo $BASH_TMP
+}
+# }}}
+
 USER=`whoami`
 #VERBOSE=TRUE
 function verbose()
@@ -29,6 +57,16 @@ function clone_dep()
     fi
     echo "# ... clone ${DEP_GIT} into ${DEP_DIR} [DONE]"
     verbose
+}
+
+function compile_memcached()
+{
+    MEMCACHED_COMPILATION_DIR=`BASH_MKTEMP_DIR`
+    cd ${MEMCACHED_COMPILATION_DIR}
+    git clone https://github.com/adiog/libmemcached
+    cd libmemcached
+    git checkout quicksave
+    ./configure --prefix=/usr && make -j 4 && sudo make install
 }
 
 function apt_quicksave()
@@ -294,10 +332,12 @@ function rabbitmq()
     PORT=5672
 }
 
-
 apt_quicksave
 pip_quicksave
 qs_python
+if ! grep -q touch /usr/include/libmemcached-1.0/memcached.hpp; then
+    compile_memcached
+fi
 
 mkdir -p ${IO_QUICKSAVE_LOG_DIR}
 
