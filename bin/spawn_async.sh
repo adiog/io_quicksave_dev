@@ -34,7 +34,7 @@ virtualenv -p python3.6 ${VENV_DIR}
 
 . ${VENV_DIR}/bin/activate
 
-pip install git+http://gitlab.brainfuck.pl/adiog/io_quicksave_pybeans.git --upgrade
-pip install git+http://gitlab.brainfuck.pl/adiog/io_quicksave_async.git --upgrade
+pip install git+https://github.com/adiog/io_quicksave_pybeans.git --upgrade
+pip install git+https://github.com/adiog/io_quicksave_async.git --upgrade
 
 qs-async
