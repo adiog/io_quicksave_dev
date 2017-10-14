@@ -1,2 +1,4 @@
 swagger-editor/
+docker-cpp
+venv
 .idea

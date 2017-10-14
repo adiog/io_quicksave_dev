@@ -10,3 +10,5 @@ cd $(dirname $0)
 
 ./reset_hosts.sh
 ./reset_nginx.sh
+
+./get_client.sh

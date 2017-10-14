@@ -28,3 +28,7 @@ screen -d -m -S qs-api bash -l -c docker-cpp/0-api.sh
 screen -d -m -S qs-cdn bash -l -c docker-cpp/0-cdn.sh
 screen -d -m -S qs-oauth bash -l -c docker-cpp/0-oauth.sh
 screen -d -m -S qs-post bash -l -c docker-cpp/0-post.sh
+
+sleep 3
+
+screen -ls
