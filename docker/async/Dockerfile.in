@@ -3,7 +3,7 @@ FROM quicksave/dev-python
 RUN mkdir -p /keys
 RUN mkdir -p /sshfs
 
-RUN apt-get install virtualenv sshfs -y
+RUN apt-get install phantomjs virtualenv sshfs youtube-dl -y
 
 RUN virtualenv -p python3.6 venv \
     && . venv/bin/activate \
@@ -20,4 +20,5 @@ CMD . venv/bin/activate \
     && sshfs storage_quicksave_docker:/storage /storage/ -o IdentityFile=/storage_id_rsa -o idmap=user  \
     && export IO_QUICKSAVE_MQ_HOST=mq_quicksave_docker \
     && export IO_QUICKSAVE_MQ_PORT=5672 \
+    && export QT_QPA_PLATFORM=offscreen \
     && qs-async
