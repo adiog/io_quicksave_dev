@@ -20,7 +20,7 @@ sudo docker run \
     --expose 5672 \
     --expose 15672 \
     --net network_quicksave_docker \
-    -p ${IO_QUICKSAVE_MQ_PORT}:5672 \
-    -p ${IO_QUICKSAVE_MQ_MANAGE_PORT}:15672 \
+    -p 5672:5672 \
+    -p 15672:15672 \
     rabbitmq:management
 
