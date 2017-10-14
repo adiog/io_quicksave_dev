@@ -3,5 +3,5 @@
 # Copyright 2017 Aleksander Gajewski <adiog@quicksave.io>.
 
 cat Dockerfile.in | envsubst > Dockerfile
-sudo docker build --no-cache -t quicksave/async .
+sudo docker build --no-cache -t quicksave/test-async .
 rm Dockerfile

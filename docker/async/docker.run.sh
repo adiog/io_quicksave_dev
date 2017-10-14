@@ -7,4 +7,4 @@ sudo docker run \
     --privileged \
         --name async_quicksave_docker \
         --net network_quicksave_docker \
-        -it quicksave/async
+        -it quicksave/test-async
