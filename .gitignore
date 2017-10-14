@@ -1,13 +1,2 @@
-antlr4/
-beans/
-cpp/
-fuse/
-libbeans/
-logs/
-plugin-engine/
-proxygen/
-qsql/
 swagger-editor/
-tmp/
-www/
 .idea

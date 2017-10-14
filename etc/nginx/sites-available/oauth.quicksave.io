@@ -1,15 +1,12 @@
 server {
-  server_name ${IO_QUICKSAVE_OAUTH};
+  server_name oauth.quicksave.io;
 
   listen 0.0.0.0:80;
   listen [::]:80;
 
-  access_log  ${IO_QUICKSAVE_LOG_DIR}/${IO_QUICKSAVE_OAUTH}_access.log;
-  error_log   ${IO_QUICKSAVE_LOG_DIR}/${IO_QUICKSAVE_OAUTH}_error.log;
-
   location / {
-    proxy_pass http://${IO_QUICKSAVE_OAUTH_HOST}:${IO_QUICKSAVE_OAUTH_PORT};
-    add_header 'Access-Control-Allow-Origin' 'http://${IO_QUICKSAVE}';
+    proxy_pass http://127.0.0.1:13000;
+    add_header 'Access-Control-Allow-Origin' 'http://quicksave.io';
     add_header 'Access-Control-Allow-Credentials' 'true';
     add_header 'Access-Control-Max-Age' '86400';
     add_header 'Access-Control-Allow-Methods' 'PUT,GET,POST,DELETE';
