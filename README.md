@@ -9,7 +9,7 @@ Demo Requirements
 - python3.6 and virtualenv
 - nginx
 
-note: it is not safe, but if you want avoid problem with running multiple screen instances you may want to modify your /etc/sudoers file:
+note: it is not safe, but if you want to avoid problems with running multiple screen sessions, you may modify your /etc/sudoers file:
 ```
 youruser ALL=(ALL) NOPASSWD:ALL
 ```
@@ -71,6 +71,11 @@ If you want to bind a *qs* command to a keyboard shortcut, you may use the *--gu
 qs --gui --area
 ```
 The default session length is set to 1 hour.
+
+*Note: to use commandline client system-wise:*
+```
+sudo pip3.6 install git+https://github.com/adiog/io_quicksave_client --upgrade
+```
 
 QSQL queries
 ------------
