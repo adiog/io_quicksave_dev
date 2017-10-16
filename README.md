@@ -38,7 +38,7 @@ Just run:
 ```
 $ ./bootstrap.sh
 ```
-WARNING: sudo will be used with each container (you may have to check all 10 screen sessions!).
+WARNING: sudo will be used with each container (you may have to check all 10 screen sessions! *$ screen -r qs<TAB>*).
 
 Using demo
 ----------
