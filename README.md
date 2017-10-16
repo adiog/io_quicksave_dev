@@ -1,5 +1,88 @@
+# quicksave
+
+## DEMO
+
+Demo Requirements
+-----------------
+- screen
+- docker
+- python3.6 and virtualenv
+- nginx
+
+What is the impact on the host system?
+--------------------------------------
+Demo is intended to be run locally, so the following /etc/hosts entries should be placed:
+```
+127.0.0.1 api.quicksave.io cdn.quicksave.io oauth.quicksave.io www.quicksave.io quicksave.io
+```
+These changes will be automatically made by ./bootstrap.sh script.
+
+Additionally the nginx sites associated with these domains will be registered. By default the following ports will be used:
+```
+8080 ~ quicksave.io
+11000 ~ api.quicksave.io
+12000 ~ cdn.quicksave.io
+13000 ~ oauth.quicksave.io
+```
+
+The configuration can be found under **https://github.com/adiog/io_quicksave_dev/tree/master/etc**
+
+Bootstrapping demo
+------------------
+Just run:
+```
+$ ./bootstrap.sh
+```
+WARNING: sudo will be used with each container (you may have to check all 10 screen sessions!).
+
+Using demo
+----------
+- The default user (*testuser*/*testpass*) will be created.
+- Open a browser and simply go to *quicksave.io*
+- If you are using Firefox install extension from: *https://addons.mozilla.org/en-US/firefox/addon/quicksave-io/*
+- If you are using Chrome you may manually "Load unpacked extension" from *https://github.com/adiog/io_quicksave_chrome/archive/master.zip*
+
+Command line tool
+-----------------
+If you do not want to pollute your python environment activate virtualenv:
+```
+. ~/.quicksave/venv/bin/activate
+```
+The command line tool *qs* will be added to your PATH:
+```
+$ qs --text \"do homework\"
+$ qs --file VeryImportant.pdf
+$ qs --clipboard
+$ qs --screenshot
+$ qs --input
+```
+Please mind that some additional dependancies are implied (e.g. gnome-screenshot, gedit, xsel).
+The configuration file can be found under:
+```
+~/.quicksave/quicksave.ini
+```
+If you want to bind a *qs* command to a keyboard shortcut, you may use the *--gui* switch for a credentials prompt. E.g.:
+```
+qs --gui --area
+```
+The default session length is set to 1 hour.
+
+QSQL queries
+------------
+Currently the basic filtering can be done only with QSQL, the syntax is straighforward:
+```
+WHERE name = 'exact match'
+WHERE name ~ 'pattern'
+WHERE tag 'yourtag'
+WHERE ((name ~ 'Screenshot') OR (tag 'funpic'))
+```
+Note: excessive parenthesis are currently mandatory.
+
+
+## Design notes
+
 Overview
-========
+--------
 'quicksave system' provides an easy-access online 'database'.
 
 'objects' can have a different form:
@@ -11,7 +94,7 @@ etc.
 the actual behaviour of creating and retrieving objects is determined by configurable set of plugins.
 
 Object passing
-==============
+--------------
 
 Bean stands here for an serializable object satisfying a json signature.
 
@@ -88,13 +171,16 @@ consisted of three main components:
 
 plugin-engine component can be found in **[plugin-engine repository](https://github.com/adiog/io_quicksave_plugin-engine)**
 
-chrome-plugin / social API / bookmarklet
-----------------------------------------
+*Note: the single plugin-engine repository is deprecated. The following ones will be used io_quicksave_api-ext (safe python), io_quicksave_async (unsafe python), io_quicksave_www (javascript).*
+
+browser plugin / social API / bookmarklet
+-----------------------------------------
 browser integration.
 
-chrome plugin can be found in **[chrome plugin repository](https://github.com/adiog/io_quicksave_www/tree/master/client-chrome)**
+chrome plugin can be found in **[chrome plugin repository](https://github.com/adiog/io_quicksave_chrome)**
+firefox plugin can be found in **[firefox plugin repository](https://github.com/adiog/io_quicksave_firefox)**
 
-Fortunately, recently, Firefox has been adapted to modern browser extension API, and the same chrome plugin can be loaded by Firefox 56+ **[firefox plugin repository](https://github.com/adiog/io_quicksave_www/tree/master/client-firefox)**
+Firefox Add-on has been already published under **[firefox plugin](https://addons.mozilla.org/en-US/firefox/addon/quicksave-io/)**
 
 command line client
 -------------------
@@ -103,10 +189,6 @@ python-based command line client and explorer integration.
 cli client can be found in **[cli client repository](https://github.com/adiog/io_quicksave_client)**
 
 
-WARNING
-=======
-
-If you would consider building/running it: it should be possible. I have tested in on VM with Ubuntu LTS. Keep in mind that building proxygen requires at least 4GB of ram. After successful compilation you should run each component separately (api/oauth/cdn/pyasync/post/rabbitmq/memcached assuming sqlite backend), than you should fix the nginx/hosts (www-component can be served in a static way). Whole operation is a pain in the spine, but possible.
 
 Architecture
 ============
@@ -133,16 +215,3 @@ CreateRequest
 =============
 ![alt text](https://github.com/adiog/io_quicksave_dev/raw/master/doc/CreateRequest.png "quicksave.io CreateRequest")
 
-Bootstrapping
-=============
-Configuration is propagated from env.sh.
-
-./bootstrap.sh loads env.sh
-
-- ./api
-- ./cdn
-- ./oauth
-are using googleflags, ie. to pass env variable use:
-- IO_QUICKSAVE_API_HOST=80 ./api --fromenv=IO_QUICKSAVE_API_HOST
-or directly
-- ./api --IO_QUICKSAVE_API_HOST=80
