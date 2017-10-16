@@ -9,6 +9,11 @@ Demo Requirements
 - python3.6 and virtualenv
 - nginx
 
+note: it is not safe, but if you want avoid problem with running multiple screen instances you may want to modify your /etc/sudoers file:
+```
+youruser ALL=(ALL) NOPASSWD:ALL
+```
+
 What is the impact on the host system?
 --------------------------------------
 Demo is intended to be run locally, so the following /etc/hosts entries should be placed:
