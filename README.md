@@ -1,9 +1,9 @@
 # quicksave
 
-## DEMO
+## Running quicksave locally
 
-Demo Requirements
------------------
+Requirements
+------------
 - screen
 - docker
 - python3.6 and virtualenv
@@ -16,7 +16,7 @@ youruser ALL=(ALL) NOPASSWD:ALL
 
 What is the impact on the host system?
 --------------------------------------
-Demo is intended to be run locally, so the following /etc/hosts entries will be placed:
+Test environment is intended to be run locally, so the following /etc/hosts entries will be placed:
 ```
 127.0.0.1 api.quicksave.io cdn.quicksave.io oauth.quicksave.io www.quicksave.io quicksave.io
 ```
@@ -32,16 +32,16 @@ Additionally the nginx sites associated with these domains will be registered. B
 
 The configuration can be found under **https://github.com/adiog/io_quicksave_dev/tree/master/etc**
 
-Bootstrapping demo
-------------------
+Bootstrapping
+-------------
 Just run:
 ```
 $ ./bootstrap.sh
 ```
 WARNING: sudo will be used with each container (you may have to check all 10 screen sessions! (*$ screen -r qs&lt;TAB&gt;*)).
 
-Using demo
-----------
+Usage
+-----
 - The default user (*testuser*/*testpass*) will be created.
 - Open a browser and simply go to *quicksave.io*
 - If you are using Firefox install extension from: *https://addons.mozilla.org/en-US/firefox/addon/quicksave-io/*
@@ -66,7 +66,7 @@ The configuration file can be found under:
 ```
 ~/.quicksave/quicksave.ini
 ```
-If you want to bind a *qs* command to a keyboard shortcut, you may use the *--gui* switch for a credentials prompt. E.g.:
+If you want to bind a *qs* command to a keyboard shortcut, you may use the *--gui* switch for x-window credentials prompt. E.g.:
 ```
 qs --gui --area
 ```
