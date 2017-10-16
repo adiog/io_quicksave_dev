@@ -16,7 +16,7 @@ youruser ALL=(ALL) NOPASSWD:ALL
 
 What is the impact on the host system?
 --------------------------------------
-Demo is intended to be run locally, so the following /etc/hosts entries should be placed:
+Demo is intended to be run locally, so the following /etc/hosts entries will be placed:
 ```
 127.0.0.1 api.quicksave.io cdn.quicksave.io oauth.quicksave.io www.quicksave.io quicksave.io
 ```
@@ -88,6 +88,9 @@ WHERE ((name ~ 'Screenshot') OR (tag 'funpic'))
 ```
 Note: excessive parenthesis are currently mandatory.
 
+## Known Issues
+
+There is a lot..
 
 ## Design notes
 
