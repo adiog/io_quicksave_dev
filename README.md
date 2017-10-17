@@ -40,6 +40,11 @@ $ ./bootstrap.sh
 ```
 WARNING: sudo will be used with each container (you may have to check all 10 screen sessions! (*$ screen -r qs&lt;TAB&gt;*)).
 
+The *STUPID* option:
+```
+$ ./suicide.sh && ./deps.sh && ./bootstrap.sh
+```
+
 Usage
 -----
 - The default user (*testuser*/*testpass*) will be created.
@@ -109,7 +114,7 @@ the actual behaviour of creating and retrieving objects is determined by configu
 Object passing
 --------------
 
-Bean stands here for an serializable object satisfying a json signature.
+Bean stands here for an serializable object satisfying a json signature. It is a simply ABI specification. It will be renamed to avoid confusion. Or even replaced by existing solutions like protobuf.
 
 Bean objects used by system can be found in **[beans repository](https://github.com/adiog/io_quicksave_beans)**.
 
@@ -228,3 +233,6 @@ CreateRequest
 =============
 ![alt text](https://github.com/adiog/io_quicksave_dev/raw/master/doc/CreateRequest.png "quicksave.io CreateRequest")
 
+API Drafts
+==========
+*swagger.quicksave.io*
