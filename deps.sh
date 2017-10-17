@@ -54,7 +54,7 @@ sudo add-apt-repository \
 sudo apt-get update -y
 sudo apt-get install -y docker-ce
 
-sudo apt-get install -y gcc g++
+sudo apt-get install -y gcc g++ make zlib1g-dev
 git clone https://github.com/python/cpython \
     && cd cpython \
     && git checkout 3.6 \
