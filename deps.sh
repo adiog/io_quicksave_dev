@@ -31,15 +31,15 @@ function BASH_MKTEMP_DIR() {
 }
 # }}}
 
-sudo apt-get install screen
+sudo apt-get install -y screen
 
-sudo apt-get remove docker docker-engine docker.io
-sudo apt-get update
-sudo apt-get install \
-      apt-transport-https \
-          ca-certificates \
-              curl \
-                  software-properties-common
+sudo apt-get remove -y docker docker-engine docker.io
+sudo apt-get update -y
+sudo apt-get install -y \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    software-properties-common
     
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
     
@@ -51,18 +51,18 @@ sudo add-apt-repository \
            stable"
    
 
-sudo apt-get update
-sudo apt-get install docker-ce
+sudo apt-get update -y
+sudo apt-get install -y docker-ce
    
 git clone https://github.com/python/cpython \
-      && cd cpython \
-          && git checkout 3.6 \
-              && ./configure \
-                  && make -j 4 \
-                      && sudo make install \
-                          && cd .. \
-                              && rm -fr cpython
-sudo apt install python3-virtualenv
+    && cd cpython \
+    && git checkout 3.6 \
+    && ./configure \
+    && make -j 4 \
+    && sudo make install \
+    && cd .. \
+    && rm -fr cpython
+sudo apt install -y virtualenv python3-virtualenv
 
-sudo apt install nginx
+sudo apt install -y nginx
 
