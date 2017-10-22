@@ -10,6 +10,8 @@ echo "          either start processes manually or put a NOPASSWD: into sudoers 
 sudo docker network rm network_quicksave_docker
 sudo docker network create network_quicksave_docker
 
+screen -d -m -S qs-audit bash -l -c bin/spawn_audit.sh
+
 screen -d -m -S qs-www bash -l -c docker/www/docker.run.sh
 
 screen -d -m -S qs-memcached bash -l -c docker/memcached/docker.bootstrap.sh

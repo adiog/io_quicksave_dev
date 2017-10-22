@@ -1,14 +1,15 @@
-FROM quicksave/dev-python
+FROM quicksave/dev-curl
 
 RUN mkdir -p /keys
 RUN mkdir -p /sshfs
 
-RUN apt-get install phantomjs virtualenv sshfs youtube-dl -y
+RUN apt-get install phantomjs -y
 
 RUN virtualenv -p python3.6 venv \
     && . venv/bin/activate \
+    && pip3 install youtube_dl \
     && pip3 install git+https://github.com/adiog/io_quicksave_pybeans --upgrade \
-    && pip3 install git+https://github.com/adiog/io_quicksave_async.git --upgrade
+    && pip3 install git+https://github.com/adiog/io_quicksave_async --upgrade
 
 COPY storage_id_rsa /
 COPY storage_id_rsa.pub /
@@ -21,4 +22,5 @@ CMD . venv/bin/activate \
     && export IO_QUICKSAVE_MQ_HOST=mq_quicksave_docker \
     && export IO_QUICKSAVE_MQ_PORT=5672 \
     && export QT_QPA_PLATFORM=offscreen \
-    && qs-async
+    && qs-async \\
+    || qs-audit fatal "quicksave post crashed" && bash

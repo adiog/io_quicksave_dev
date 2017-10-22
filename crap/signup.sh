@@ -30,7 +30,7 @@ export SQLITE_USER_SQL=${USERNAME}.sql
      ${USERNAME} \
      ${password} \
      sqlite:///storage/host/${SQLITE_USER_DB} \
-     file:///storage/host/files/${USERNAME} \
+     file:///storage/host/users/${USERNAME} \
          > ${SQLITE_MASTER_SQL}
 
 rm -fr io_quicksave_libbeans
