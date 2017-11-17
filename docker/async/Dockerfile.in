@@ -3,7 +3,7 @@ FROM quicksave/dev-curl
 RUN mkdir -p /keys
 RUN mkdir -p /sshfs
 
-RUN apt-get install phantomjs -y
+RUN apt-get install -y phantomjs ffmpeg libav-tools
 
 RUN virtualenv -p python3.6 venv \
     && . venv/bin/activate \

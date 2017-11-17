@@ -1,0 +1,11 @@
+#!/bin/bash
+# Copyright 2017 Aleksander Gajewski <adiog@quicksave.io>
+
+IO_QUICKSAVE_AUDIT=http://audit.quicksave.io
+
+SEVERITY=$1
+shift 1
+NOTIFICATION_DIRTY=$*
+NOTIFICATION=`echo ${NOTIFICATION_DIRTY} | sed -e "s#[^a-zA-Z0-9\._\-]##g"`
+curl -d "${NOTIFICATION}" ${IO_QUICKSAVE_AUDIT}/log/${SEVERITY}/ 2>&1 > /dev/null
+

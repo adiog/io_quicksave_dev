@@ -22,5 +22,5 @@ sudo docker run \
     --net network_quicksave_docker \
     -p 5672:5672 \
     -p 15672:15672 \
-    rabbitmq:management
-
+    rabbitmq:management \
+|| ./bin/qs-audit fatal "rabbit-mq crashed"

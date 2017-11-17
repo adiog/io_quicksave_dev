@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+cd $(dirname $0)
+
+sudo cp ./quicksave.io /etc/nginx/sites-enabled/quicksave.io
+sudo service nginx restart
+
 export LOCAL_STORAGE=/quicksave-storage
 
 export HOSTIP=`hostname -I | cut -d" " -f1`

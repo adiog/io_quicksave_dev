@@ -28,6 +28,7 @@ Additionally the nginx sites associated with these domains will be registered. B
 11000 ~ api.quicksave.io
 12000 ~ cdn.quicksave.io
 13000 ~ oauth.quicksave.io
+13666 ~ audit.quicksave.io
 ```
 
 The configuration can be found under **https://github.com/adiog/io_quicksave_dev/tree/master/etc**

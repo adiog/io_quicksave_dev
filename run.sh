@@ -18,7 +18,7 @@ screen -d -m -S qs-memcached bash -l -c docker/memcached/docker.bootstrap.sh
 screen -d -m -S qs-memadmin bash -l -c docker/memadmin/docker.run.sh
 screen -d -m -S qs-rabbitmq bash -l -c docker/rabbitmq/docker.bootstrap.sh
 
-sleep 3
+sleep 5
 
 screen -d -m -S qs-async bash -l -c docker/async/docker.run.sh
 
