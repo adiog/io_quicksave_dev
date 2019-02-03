@@ -4,6 +4,10 @@
 
 cd $(dirname $0)
 
+#./deps.sh
+
+. ./env.sh
+
 ./get_starting_scripts.sh
 
 ./run.sh

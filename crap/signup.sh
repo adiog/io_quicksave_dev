@@ -40,22 +40,22 @@ export SQLITE_USER_SQL=${USERNAME}.sql
 
 rm -fr io_quicksave_libbeans
 
-sudo docker exec storage_quicksave_docker mkdir -p /storage/host
-sudo docker cp ${SQLITE_MASTER_SQL} storage_quicksave_docker:/storage/${SQLITE_MASTER_SQL}
+docker exec storage_quicksave_docker mkdir -p /storage/host
+docker cp ${SQLITE_MASTER_SQL} storage_quicksave_docker:/storage/${SQLITE_MASTER_SQL}
 rm -fr ${SQLITE_MASTER_SQL}
-sudo docker exec storage_quicksave_docker sqlite3 /storage/${SQLITE_MASTER_DB} ".read /storage/${SQLITE_MASTER_SQL}"
+docker exec storage_quicksave_docker sqlite3 /storage/${SQLITE_MASTER_DB} ".read /storage/${SQLITE_MASTER_SQL}"
 
-sudo docker exec storage_quicksave_docker mkdir -p /root/.ssh
+docker exec storage_quicksave_docker mkdir -p /root/.ssh
 
-sudo docker exec storage_quicksave_docker ssh-keygen -t rsa -f ${KEY_PRIV} -N ''
+docker exec storage_quicksave_docker ssh-keygen -t rsa -f ${KEY_PRIV} -N ''
 
-sudo docker cp storage_quicksave_docker:/root/.ssh/$(basename ${KEY_PUB}) $(basename ${KEY_PUB})
+docker cp storage_quicksave_docker:/root/.ssh/$(basename ${KEY_PUB}) $(basename ${KEY_PUB})
 cat $(basename ${KEY_PUB}) | sudo tee /root/.ssh/authorized_keys
 rm -fr $(basename ${KEY_PUB})
 
-sudo docker exec storage_quicksave_docker mkdir -p /storage/host
-sudo docker exec storage_quicksave_docker ls /root/.ssh/
-sudo docker exec storage_quicksave_docker ssh-keyscan ${HOSTIP} > known_hosts
-sudo docker cp known_hosts storage_quicksave_docker:/root/.ssh/known_hosts
+docker exec storage_quicksave_docker mkdir -p /storage/host
+docker exec storage_quicksave_docker ls /root/.ssh/
+docker exec storage_quicksave_docker ssh-keyscan ${HOSTIP} > known_hosts
+docker cp known_hosts storage_quicksave_docker:/root/.ssh/known_hosts
 rm -fr known_hosts
-sudo docker exec storage_quicksave_docker sshfs ${HOSTIP}:${LOCAL_STORAGE} /storage/host -o IdentityFile=/root/.ssh/$(basename ${KEY_PRIV}) -o idmap=user
+docker exec storage_quicksave_docker sshfs ${HOSTIP}:${LOCAL_STORAGE} /storage/host -o IdentityFile=/root/.ssh/$(basename ${KEY_PRIV}) -o idmap=user

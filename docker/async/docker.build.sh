@@ -5,5 +5,5 @@
 cd $(dirname $0)
 
 cat Dockerfile.in | envsubst > Dockerfile
-sudo docker build --no-cache -t quicksave/test-async .
+docker build --no-cache -t quicksave/test-async .
 rm Dockerfile

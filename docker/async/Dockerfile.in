@@ -3,7 +3,7 @@ FROM quicksave/dev-curl
 RUN mkdir -p /keys
 RUN mkdir -p /sshfs
 
-RUN apt-get install -y phantomjs ffmpeg libav-tools
+RUN apt update && apt-get install -y phantomjs ffmpeg libav-tools
 
 RUN virtualenv -p python3.6 venv \
     && . venv/bin/activate \
@@ -14,9 +14,11 @@ RUN virtualenv -p python3.6 venv \
 COPY storage_id_rsa /
 COPY storage_id_rsa.pub /
 
-CMD . venv/bin/activate \
-    && mkdir ~/.ssh \
+RUN mkdir -p ~/.ssh \
     && mkdir -p /storage \
+    && chmod 700 storage_id_rsa  storage_id_rsa.pub
+
+CMD . venv/bin/activate \
     && ssh-keyscan storage_quicksave_docker >> ~/.ssh/known_hosts \
     && sshfs storage_quicksave_docker:/storage /storage/ -o IdentityFile=/storage_id_rsa -o idmap=user  \
     && export IO_QUICKSAVE_MQ_HOST=mq_quicksave_docker \

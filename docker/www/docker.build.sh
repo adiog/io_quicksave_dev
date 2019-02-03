@@ -6,7 +6,7 @@ sed -e "s/https/http/g" -i ./io_quicksave_www/js/env.js
 find . -name .git -type d -exec rm -fr {} \;
 
 cat Dockerfile.in | envsubst > Dockerfile
-sudo docker build -t quicksave/www .
+docker build -t quicksave/www .
 
 rm Dockerfile
 rm -fr io_quicksave_www

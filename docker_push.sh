@@ -47,6 +47,6 @@ for d in \
   test-async \
   www;
 do
-  sudo docker push quicksave/$d;
+  docker push quicksave/$d;
 done
 

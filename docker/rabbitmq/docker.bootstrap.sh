@@ -4,7 +4,7 @@
 
 function init_queues()
 {
-  sleep 5
+  sleep 8
   wget http://localhost:${IO_QUICKSAVE_MQ_MANAGE_PORT}/cli/rabbitmqadmin
   chmod +x rabbitmqadmin
   ./rabbitmqadmin declare queue name=request durable=false
@@ -14,8 +14,8 @@ function init_queues()
 }
 
 init_queues &
-sudo docker rm mq_quicksave_docker
-sudo docker run \
+docker rm mq_quicksave_docker
+docker run \
     --name mq_quicksave_docker \
     --expose 5672 \
     --expose 15672 \

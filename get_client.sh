@@ -4,7 +4,7 @@
 
 cd $(dirname $0)
 
-[[ ! -e venv ]] && virtualenv -p python3.6 venv
+[[ ! -e venv ]] && python3 -m virtualenv -p python3.6 venv
 . venv/bin/activate
 pip3 install git+https://github.com/adiog/io_quicksave_client.git --upgrade
 
