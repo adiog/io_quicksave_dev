@@ -4,9 +4,21 @@
 
 cd $(dirname $0)
 
-[[ ! -e venv ]] && python3 -m virtualenv -p python3.6 venv
-. venv/bin/activate
+mkdir -p ~/.quicksave
+[[ ! -e ~/.quicksave/venv ]] && python3 -m virtualenv -p python3 ~/.quicksave/venv
+. ~/.quicksave/venv/bin/activate
 pip3 install git+https://github.com/adiog/io_quicksave_client.git --upgrade
+
+function get_script() {
+  SCRIPT=$1
+  [[ ! -e ~/.quicksave/bin/${SCRIPT} ]] && wget -O ~/.quicksave/bin/${SCRIPT} https://raw.githubusercontent.com/adiog/io_quicksave_client/master/bin/${SCRIPT}
+  chmod +x ~/.quicksave/bin/${SCRIPT}
+}
+
+mkdir -p ~/.quicksave/bin
+get_script qsarea.sh
+get_script qsclip.sh
+get_script qsnote.sh
 
 echo
 qs -h
