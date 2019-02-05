@@ -1,8 +1,7 @@
 server {
   server_name api.quicksave.io;
 
-  listen 0.0.0.0:80;
-  listen [::]:80;
+  listen 80;
 
   client_max_body_size 200M;
 
