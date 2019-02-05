@@ -4,6 +4,8 @@
 
 cd $(dirname $0)
 
+sudo apt install gedit xsel gnome-screenshot
+
 mkdir -p ~/.quicksave
 [[ ! -e ~/.quicksave/venv ]] && python3 -m virtualenv -p python3 ~/.quicksave/venv
 . ~/.quicksave/venv/bin/activate
